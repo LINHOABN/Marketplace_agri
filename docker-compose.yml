@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: agrimarche_db
+    restart: always
+    environment:
+      POSTGRES_USER: agrimarche_user
+      POSTGRES_PASSWORD: agrimarche_password
+      POSTGRES_DB: agrimarche_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

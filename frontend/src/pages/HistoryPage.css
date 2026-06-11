@@ -1,0 +1,369 @@
+/* HistoryPage  Premium Dashboard Style */
+.history-page-wrapper {
+  background: var(--background);
+  min-height: 100vh;
+}
+
+.history-header {
+  background: var(--surface);
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.history-header h1 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-main);
+  flex: 1;
+}
+
+.back-btn {
+  background: var(--surface-hover);
+  border: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-main);
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.back-btn:hover {
+  background: var(--border-color);
+  transform: scale(1.05);
+}
+
+/* Role Tabs */
+.history-tabs {
+  display: flex;
+  background: var(--surface);
+  padding: 4px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.history-tabs button {
+  flex: 1;
+  padding: 12px 16px;
+  border: none;
+  background: transparent;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+}
+
+.history-tabs button.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  background: rgba(27, 94, 32, 0.04);
+}
+
+/* Main Content */
+.history-content {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Filters */
+.history-filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.filter-item {
+  background: var(--surface);
+  padding: 10px 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 200px;
+  transition: border-color 0.2s;
+}
+
+.filter-item:focus-within {
+  border-color: var(--primary);
+}
+
+.filter-item select {
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-main);
+  width: 100%;
+  outline: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* Order Cards */
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.history-order-card {
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: all 0.25s;
+}
+
+.history-order-card.clickable:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-light);
+}
+
+.card-top {
+  display: flex;
+  gap: 1.25rem;
+  padding: 1.25rem 1.5rem;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.card-top img {
+  width: 72px;
+  height: 72px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.card-top .info {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-top h4 {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-top .date {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* Status Badge */
+.status-badge {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.status-badge.completed,
+.status-badge.delivered {
+  background: #E8F5E9;
+  color: #2E7D32;
+  border: 1px solid #C8E6C9;
+}
+
+.status-badge.pending {
+  background: #FFF8E1;
+  color: #F57F17;
+  border: 1px solid #FFECB3;
+}
+
+.status-badge.cancelled {
+  background: #FFEBEE;
+  color: #C62828;
+  border: 1px solid #FFCDD2;
+}
+
+.status-badge.dispute {
+  background: #FCE4EC;
+  color: #AD1457;
+  border: 1px solid #F8BBD0;
+}
+
+.status-badge.shipped {
+  background: #E3F2FD;
+  color: #1565C0;
+  border: 1px solid #BBDEFB;
+}
+
+/* Card Middle */
+.card-middle {
+  background: var(--surface-hover);
+  padding: 14px 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.detail {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.detail span {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.detail strong {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.price {
+  color: var(--primary) !important;
+}
+
+/* Card Actions */
+.card-actions {
+  display: flex;
+  gap: 10px;
+  padding: 14px 1.5rem;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  flex: 1;
+  min-width: 100px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  white-space: nowrap;
+}
+
+.action-btn.track-btn {
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 4px 10px rgba(27, 94, 32, 0.2);
+}
+
+.action-btn.track-btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+.action-btn.download {
+  background: var(--surface-hover);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+}
+
+.action-btn.download:hover {
+  border-color: var(--primary-light);
+}
+
+.action-btn.renew {
+  background: #FF6600;
+  color: white;
+}
+
+.action-btn.renew:hover {
+  background: #E55A00;
+}
+
+.action-btn.review {
+  background: transparent;
+  color: #F59E0B;
+  border: 1px solid #F59E0B;
+}
+
+.action-btn.review:hover {
+  background: #FFFBEB;
+}
+
+/* Empty + Loading */
+.loader-box {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--text-muted);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.empty-state p {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .history-content {
+    padding: 1rem;
+  }
+
+  .history-header {
+    padding: 1rem;
+  }
+
+  .filter-item {
+    min-width: auto;
+    flex: 1;
+  }
+
+  .card-top {
+    padding: 1rem;
+  }
+
+  .card-middle {
+    padding: 12px 1rem;
+  }
+
+  .card-actions {
+    padding: 12px 1rem;
+  }
+}

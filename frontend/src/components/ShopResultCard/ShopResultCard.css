@@ -1,0 +1,108 @@
+.shop-result-card {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.shop-result-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    border-color: var(--primary-light);
+}
+
+.shop-result-main {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.shop-result-logo,
+.shop-result-initials {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    object-fit: cover;
+}
+
+.shop-result-initials {
+    background: linear-gradient(135deg, #2e7d32 0%, #1b3a1e 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.25rem;
+}
+
+.shop-result-info {
+    flex: 1;
+}
+
+.shop-result-name-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.shop-result-name {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+.shop-result-seller {
+    margin: 2px 0 0;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.shop-result-specialties {
+    margin: 8px 0 0;
+    font-size: 0.85rem;
+    color: var(--primary);
+    background: rgba(46, 125, 50, 0.05);
+    padding: 4px 8px;
+    border-radius: 6px;
+    display: inline-block;
+}
+
+.shop-result-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--border-color);
+}
+
+.shop-result-loc {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.shop-result-btn {
+    background: none;
+    border: none;
+    color: var(--primary);
+    font-weight: 800;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+.shop-result-card:hover .shop-result-btn {
+    background: rgba(46, 125, 50, 0.08);
+}

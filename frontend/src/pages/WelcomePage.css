@@ -1,0 +1,354 @@
+:root {
+  --agri-green: #1a7f37;
+  --agri-green-light: #22a04a;
+  --agri-yellow: #ffb700;
+  --agri-white: #ffffff;
+  --agri-text: #0f1410;
+  --agri-text-muted: #5c6b60;
+  --agri-bg: #f8fbf9;
+  --radius-md: 14px;
+  --radius-sm: 8px;
+}
+
+.booking-welcome-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--agri-bg);
+  color: var(--agri-text);
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
+/* Header */
+.booking-header {
+  background-color: var(--agri-green);
+  padding: 14px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+  font-size: 26px;
+  font-weight: 800;
+  cursor: pointer;
+  letter-spacing: -1px;
+}
+
+.brand-icon {
+  color: #a3ffbd;
+}
+
+.nav-btn {
+  padding: 10px 20px;
+  border-radius: 40px;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 14px;
+}
+
+.nav-btn.primary {
+  background-color: white;
+  color: var(--agri-green);
+}
+
+.nav-btn.secondary {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: white;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.nav-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Hero */
+.booking-hero {
+  background: linear-gradient(135deg, var(--agri-green) 0%, var(--agri-green-light) 100%);
+  color: white;
+  padding: 60px 0 100px 0;
+  text-align: center;
+}
+
+.hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.hero-content h1 {
+  font-size: 56px;
+  font-weight: 900;
+  margin-bottom: 16px;
+  line-height: 1.1;
+  letter-spacing: -2px;
+}
+
+.hero-content p {
+  font-size: 22px;
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+/* Search Bar */
+.search-bar-wrapper {
+  max-width: 1000px;
+  margin: -40px auto 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 20;
+}
+
+.search-bar-container {
+  background-color: var(--agri-yellow);
+  padding: 8px;
+  display: flex;
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  gap: 8px;
+}
+
+.search-field {
+  background-color: white;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  height: 64px;
+  border-radius: 14px;
+  gap: 12px;
+}
+
+.search-field.border-left {
+  border-left: 2px solid rgba(0, 0, 0, 0.05);
+}
+
+.field-icon {
+  color: var(--agri-green);
+}
+
+.search-field input {
+  border: none;
+  width: 100%;
+  font-size: 16px;
+  outline: none;
+  font-weight: 600;
+  color: var(--agri-text);
+}
+
+.search-submit-btn {
+  background-color: var(--agri-green);
+  color: white;
+  border: none;
+  padding: 0 40px;
+  font-size: 18px;
+  font-weight: 800;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.search-submit-btn:hover {
+  filter: brightness(1.1);
+  transform: scale(1.02);
+}
+
+/* Main Content */
+.booking-main-content {
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 0 24px;
+}
+
+/* Featured Section (Publications) */
+.featured-section {
+  margin-bottom: 60px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 32px;
+}
+
+.section-header h2 {
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: -1px;
+}
+
+.featured-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.publication-card {
+  background: white;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.publication-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  border-color: var(--agri-green-light);
+}
+
+.card-media {
+  height: 200px;
+  position: relative;
+}
+
+.card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.item-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--agri-green);
+  backdrop-filter: blur(4px);
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.author-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.author-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.author-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--agri-text-muted);
+}
+
+.pub-title {
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.pub-price {
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--agri-green);
+}
+
+.pub-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.time-ago {
+  font-size: 12px;
+  color: var(--agri-text-muted);
+}
+
+.view-btn {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--agri-green);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Promo Banner */
+.promo-banner {
+  background: linear-gradient(135deg, #1a7f37 0%, #0d3d1a 100%);
+  padding: 60px;
+  border-radius: 30px;
+  color: white;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.promo-banner::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -20%;
+  width: 140%;
+  height: 140%;
+  background: radial-gradient(circle, rgba(26, 127, 55, 0.4) 0%, transparent 70%);
+  z-index: 0;
+}
+
+.promo-text {
+  position: relative;
+  z-index: 1;
+}
+
+/* Footer - Replaced by Footer component */
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero-content h1 {
+    font-size: 36px;
+  }
+
+  .search-bar-container {
+    flex-direction: column;
+    border-radius: 24px;
+  }
+
+  .search-field {
+    width: 100%;
+  }
+
+  .search-submit-btn {
+    height: 60px;
+  }
+}

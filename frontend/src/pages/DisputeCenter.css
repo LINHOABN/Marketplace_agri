@@ -1,0 +1,116 @@
+.dispute-center-wrapper {
+  max-width: 500px;
+  margin: 0 auto;
+  background: #FFFFFF;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.dispute-header {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1px solid #EEE;
+}
+
+.dispute-header h1 { font-size: 18px; font-weight: 800; }
+
+.dispute-content { padding: 20px; flex: 1; }
+
+.info-banner {
+  background: #FFF3E0;
+  color: #E65100;
+  padding: 16px;
+  border-radius: 8px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+.dispute-form-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dispute-form-card label { font-size: 14px; font-weight: 700; color: #333; }
+
+.dispute-form-card select, .dispute-form-card textarea {
+  padding: 14px;
+  border: 1px solid #DDD;
+  border-radius: 6px;
+  font-size: 15px;
+  outline: none;
+}
+
+.dispute-form-card textarea { min-height: 120px; }
+
+.proof-zone {
+  margin-top: 20px;
+  border: 2px dashed #EEE;
+  padding: 24px;
+  text-align: center;
+  border-radius: 12px;
+}
+
+.btn-add-proof {
+  background: white;
+  border: 1px solid #DDD;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 auto 10px;
+}
+
+.proof-hint { font-size: 11px; color: #999; }
+
+.dispute-footer { padding: 20px; border-top: 1px solid #EEE; }
+
+.btn-submit-dispute {
+  width: 100%;
+  background: #D32F2F;
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 4px;
+  font-weight: 800;
+  font-size: 16px;
+}
+
+/* Success View */
+.dispute-center-wrapper.success {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 40px;
+}
+
+.dispute-center-wrapper.success h2 { margin: 20px 0 10px; font-weight: 900; }
+.dispute-center-wrapper.success p { color: #666; font-size: 14px; line-height: 1.6; }
+
+.dispute-overlay {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  color: #FF6600;
+}
+
+.btn-back-home {
+  background: #333;
+  color: white;
+  border: none;
+  padding: 14px 30px;
+  border-radius: 4px;
+  font-weight: 700;
+  margin-top: 30px;
+}

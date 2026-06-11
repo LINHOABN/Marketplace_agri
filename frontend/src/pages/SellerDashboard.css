@@ -1,0 +1,232 @@
+.seller-dashboard-wrapper {
+  background: linear-gradient(135deg, #f8fcf9 0%, #f0f7f1 100%);
+  min-height: 100vh;
+}
+
+.seller-header {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.seller-header h1 {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+}
+
+.seller-content {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* KPI CARDS GLASS */
+.kpi-card {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  padding: 1.5rem;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  box-shadow: 0 8px 32px rgba(46, 125, 50, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.kpi-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(46, 125, 50, 0.1);
+  border-color: var(--primary-light);
+}
+
+.kpi-icon-wrapper {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+}
+
+/* Management Tabs */
+.mgmt-tabs {
+  display: flex;
+  gap: 8px;
+  background: #E8EFE9;
+  padding: 4px;
+  border-radius: 14px;
+  margin-bottom: 2rem;
+  width: fit-content;
+}
+
+.mgmt-tab {
+  padding: 8px 20px;
+  border: none;
+  background: transparent;
+  font-weight: 800;
+  font-size: 14px;
+  color: #64748B;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mgmt-tab.active {
+  background: white;
+  color: var(--primary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Management Content */
+.mgmt-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+.mgmt-pub-card {
+  background: white;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+}
+
+.mgmt-pub-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(46, 125, 50, 0.1);
+  border-color: var(--primary-light);
+}
+
+.mgmt-pub-card img {
+  width: 80px;
+  height: 80px;
+  border-radius: 16px;
+  object-fit: cover;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.mgmt-pub-info h4 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+  color: #1A1A1A;
+}
+
+.mgmt-pub-info .price {
+  font-weight: 900;
+  color: var(--primary);
+  font-size: 1.15rem;
+  margin-bottom: 6px;
+}
+
+.stock-status {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.stock-status.in-stock {
+  background: #E8F5E9;
+  color: #2E7D32;
+}
+
+.stock-status.out-of-stock {
+  background: #FFEBEE;
+  color: #D32F2F;
+}
+
+/* Status Badges Refined */
+.m-badge {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 40px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.m-badge.pending {
+  background: #FFF3E0;
+  color: #E65100;
+}
+
+.m-badge.prepared {
+  background: #E3F2FD;
+  color: #1565C0;
+}
+
+.m-badge.shipped {
+  background: #E8F5E9;
+  color: #2E7D32;
+}
+
+.m-badge.delivered,
+.m-badge.completed {
+  background: #F3E5F5;
+  color: #7B1FA2;
+}
+
+.m-badge.cancelled {
+  background: #FFEBEE;
+  color: #C62828;
+}
+
+.dashboard-section {
+  background: white;
+  border-radius: 1.5rem;
+  padding: 1.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+}
+
+.section-title-row h3 {
+  font-size: 1.25rem;
+  font-weight: 900;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.02em;
+}
+
+.empty-state {
+  padding: 3rem;
+  text-align: center;
+  background: #F8FAF9;
+  border-radius: 1rem;
+  border: 2px dashed #E2E8F0;
+  color: #64748B;
+}
+
+@media (max-width: 768px) {
+  .seller-header {
+    padding: 1rem;
+  }
+
+  .seller-content {
+    padding: 1rem;
+  }
+
+  .mgmt-cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .kpi-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+}

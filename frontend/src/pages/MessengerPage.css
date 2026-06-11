@@ -1,0 +1,81 @@
+.messenger-container {
+  display: flex;
+  /* Fallback + dynamic viewport height so keyboard shrinks this on Android */
+  height: calc(100vh - 64px - 85px);
+  height: calc(100dvh - 64px - 85px);
+  background: var(--background);
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  margin: 0 auto;
+  max-width: 1400px;
+}
+
+@media (min-width: 1024px) {
+  .messenger-container {
+    height: calc(100vh - 4rem);
+    height: calc(100dvh - 4rem);
+    margin-top: 0;
+  }
+}
+
+.messenger-sidebar {
+  width: 380px;
+  border-right: 1px solid var(--border-color);
+  background: var(--gradient-surface);
+  flex-shrink: 0;
+  transition: all 0.3s var(--ease-out);
+}
+
+.messenger-main {
+  flex: 1;
+  background: var(--background);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.no-chat-selected {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  background: var(--surface-hover);
+}
+
+.messenger-sidebar.hidden {
+  display: none;
+}
+
+
+
+@media (max-width: 768px) {
+  .messenger-container {
+    /* Use dvh so the container shrinks when the keyboard pops up */
+    height: calc(100vh - 64px - 100px);
+    height: calc(100dvh - 64px - 100px);
+    flex-direction: column;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+
+  .messenger-sidebar {
+    width: 100% !important;
+  }
+
+  .messenger-main {
+    flex: 1;
+    min-height: 0;
+    /* Critical: allows flex child to shrink */
+    overflow: hidden;
+  }
+
+  .messenger-main.hidden {
+    display: none;
+  }
+}

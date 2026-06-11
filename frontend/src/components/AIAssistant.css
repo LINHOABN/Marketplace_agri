@@ -1,0 +1,233 @@
+.agribot-fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: white;
+  border-radius: 50%;
+  border: none;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2000;
+  transition: all var(--transition-normal);
+}
+
+@media (max-width: 768px) {
+  .agribot-fab {
+    bottom: 100px;
+    left: 16px;
+    right: auto;
+    width: 60px;
+    height: 60px;
+  }
+}
+
+.agribot-fab:hover {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: var(--shadow-premium);
+}
+
+.agribot-window {
+  position: fixed;
+  bottom: 100px;
+  right: 24px;
+  width: 360px;
+  height: 520px;
+  max-width: calc(100vw - 48px);
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-premium);
+  display: flex;
+  flex-direction: column;
+  z-index: 2000;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  animation: slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (max-width: 768px) {
+  .agribot-window {
+    bottom: 170px;
+    left: 16px;
+    right: auto;
+    width: calc(100vw - 32px);
+    height: 60vh;
+  }
+}
+
+@keyframes slideUpFade {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.agribot-header {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.agribot-header h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.agribot-header button {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  padding: 4px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.agribot-header button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.agribot-messages {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--background);
+}
+
+.agribot-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.agribot-suggestion {
+  border: 1px solid var(--border-color);
+  background: var(--surface);
+  color: var(--text-main);
+  font-size: 12px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.agribot-suggestion:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.agribot-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: -6px;
+}
+
+.agribot-action-btn {
+  border: 1px solid rgba(46, 125, 50, 0.4);
+  background: rgba(46, 125, 50, 0.08);
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 7px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.agribot-action-btn:hover {
+  background: rgba(46, 125, 50, 0.15);
+}
+
+.msg-bubble {
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  line-height: 1.5;
+  max-width: 85%;
+  box-shadow: var(--shadow-sm);
+}
+
+.msg-bubble.user {
+  background: var(--primary);
+  color: white;
+  align-self: flex-end;
+  border-bottom-right-radius: 2px;
+}
+
+.msg-bubble.bot {
+  background: var(--surface);
+  color: var(--text-main);
+  align-self: flex-start;
+  border-bottom-left-radius: 2px;
+  border: 1px solid var(--border-color);
+}
+
+.agribot-input {
+  padding: 16px;
+  display: flex;
+  gap: 12px;
+  background: var(--surface);
+  border-top: 1px solid var(--border-color);
+}
+
+.agribot-input input {
+  flex: 1;
+  border: 1px solid var(--border-color);
+  padding: 10px 16px;
+  border-radius: var(--radius-full);
+  outline: none;
+  background: var(--surface-hover);
+  color: var(--text-main);
+  transition: all 0.2s;
+}
+
+.agribot-input input:focus {
+  border-color: var(--primary);
+  background: var(--surface);
+}
+
+.agribot-input button {
+  background: var(--primary);
+  color: white;
+  border: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.agribot-input button:hover {
+  background: var(--primary-light);
+  transform: scale(1.05);
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
