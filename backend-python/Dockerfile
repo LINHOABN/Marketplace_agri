@@ -1,5 +1,5 @@
-# Image de base légère (Python 3.13)
-FROM python:3.13-slim
+# Image de base légère (Python 3.11 pour compatibilité passlib/bcrypt)
+FROM python:3.11-slim
 
 # Empêche la création de fichiers .pyc et active le logging immédiat
 ENV PYTHONDONTWRITEBYTECODE=1
