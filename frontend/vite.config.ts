@@ -26,6 +26,15 @@ export default defineConfig({
     target: 'es2015',
     /** Un seul fichier CSS en production — évite les styles manquants */
     cssCodeSplit: false,
+    chunkSizeWarningLimit: 1000,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+          ui: ['lucide-react', 'react-hot-toast']
+        }
+      }
+    }
   },
   css: {
     devSourcemap: true,
