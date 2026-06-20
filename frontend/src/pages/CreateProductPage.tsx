@@ -1,9 +1,8 @@
 import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../api";
 import { ImagePlus, X, Loader2, AlertCircle, Leaf, Video, ChevronLeft, Info, BadgeCheck } from "lucide-react";
 import { toast } from "react-hot-toast";
-import { API_URL } from "../config";
 import "./CreateProductPage.css";
 
 import { useUser } from "../hooks/useUser";
@@ -55,7 +54,7 @@ export default function CreateProductPage() {
     }
     setIsLoadingSuggestions(true);
     try {
-      const res = await axios.get(`${API_URL}/search/suggest?q=${encodeURIComponent(val)}`);
+      const res = await api.get(`/search/suggest?q=${encodeURIComponent(val)}`);
       setSuggestions(res.data);
       setShowSuggestions(res.data.length > 0);
     } catch (err) {
@@ -106,7 +105,7 @@ export default function CreateProductPage() {
   React.useEffect(() => {
     const fetchCats = async () => {
       try {
-        const res = await axios.get(`${API_URL}/search/categories`);
+        const res = await api.get("/search/categories");
         setCategories(res.data);
         if (res.data.length > 0 && !formData.category_id) {
           setFormData(prev => ({ ...prev, category_id: res.data[0].id }));
@@ -159,35 +158,22 @@ export default function CreateProductPage() {
 
     try {
       const mediaUrls: string[] = [];
-      const token = localStorage.getItem("access_token");
 
       for (const file of selectedMedias) {
         const uploadFormData = new FormData();
         uploadFormData.append("file", file, file.name);
 
-        const uploadRes = await axios.post(
-          `${API_URL}/media/upload`,
-          uploadFormData,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        );
+        const uploadRes = await api.post("/media/upload", uploadFormData);
         mediaUrls.push(uploadRes.data.url);
       }
 
-      await axios.post(
-        `${API_URL}/products`,
-        {
-          ...formData,
-          name: formData.title,
-          price: parseFloat(formData.price),
-          quantity_available: parseFloat(formData.quantity),
-          media_urls: mediaUrls,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
+      await api.post("/products", {
+        ...formData,
+        name: formData.title,
+        price: parseFloat(formData.price),
+        quantity_available: parseFloat(formData.quantity),
+        media_urls: mediaUrls,
+      });
 
       // Effacer le brouillon après succès
       sessionStorage.removeItem("product_create_draft");

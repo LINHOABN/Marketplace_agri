@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
+import api from "../api";
 import { ImagePlus, X, Loader2, AlertCircle, ChevronLeft, CheckCircle } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { API_URL } from "../config";
@@ -33,8 +33,8 @@ export default function EditProductPage() {
         const fetchData = async () => {
             try {
                 const [productRes, catsRes] = await Promise.all([
-                    axios.get(`${API_URL}/products/${id}`),
-                    axios.get(`${API_URL}/search/categories`),
+                    api.get(`/products/${id}`),
+                    api.get("/search/categories"),
                 ]);
                 const p = productRes.data;
                 // Only set if we don't have a newer draft or if it's the first load
@@ -95,22 +95,19 @@ export default function EditProductPage() {
         setIsSubmitting(true);
         setError(null);
         try {
-            const token = localStorage.getItem("access_token");
             const newMediaUrls: string[] = [];
 
             for (const file of selectedMedias) {
                 const fd = new FormData();
                 fd.append("file", file, file.name);
-                const res = await axios.post(`${API_URL}/media/upload`, fd, {
-                    headers: { Authorization: `Bearer ${token}` },
-                });
+                const res = await api.post("/media/upload", fd);
                 newMediaUrls.push(res.data.url);
             }
 
             const allMediaUrls = [...existingImages, ...newMediaUrls];
 
-            await axios.put(
-                `${API_URL}/products/${id}`,
+            await api.put(
+                `/products/${id}`,
                 {
                     name: formData.title,
                     description: formData.description,
@@ -120,8 +117,7 @@ export default function EditProductPage() {
                     unit: formData.unit,
                     media_urls: allMediaUrls,
                     image_url: allMediaUrls[0] || null,
-                },
-                { headers: { Authorization: `Bearer ${token}` } }
+                }
             );
 
             toast.success("Produit mis à jour !");

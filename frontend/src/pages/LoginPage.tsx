@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../api";
 import { Eye, EyeOff, AlertTriangle, Loader2, Leaf } from "lucide-react";
-import { API_URL } from "../config";
 import { useUser } from "../hooks/useUser";
 import "./LoginPage.css";
 
@@ -59,7 +58,7 @@ export default function LoginPage() {
     }
 
     try {
-      const response = await axios.post(`${API_URL}/auth/login`, {
+      const response = await api.post("/auth/login", {
         identifier: cleanIdentifier,
         password,
       });

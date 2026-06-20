@@ -2,7 +2,7 @@ import { API_URL } from "../config";
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import axios from "axios";
+import api from "../api";
 import {
   Leaf,
   AlertTriangle,
@@ -158,7 +158,7 @@ export default function RegisterPage() {
     setIsLoading(true);
     setApiError(null);
     try {
-      const response = await axios.post(`${API_URL}/auth/register`, {
+      const response = await api.post("/auth/register", {
         name: data.name,
         phone: data.phone,
         email: data.email,

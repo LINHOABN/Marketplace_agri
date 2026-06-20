@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { MessageCircle, Heart, MapPin, Trash2, Flag, Pencil } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { API_URL } from "../config";
-import axios from "axios";
 import api from "../api";
+import { API_URL } from "../config";
 import { useUser } from "../hooks/useUser";
 import toast from "react-hot-toast";
 import ConfirmModal from "./ConfirmModal";
@@ -100,10 +99,7 @@ export default function ProductCard({ product, onDeleted }: ProductCardProps) {
 
   const handleDelete = async () => {
     try {
-      const token = localStorage.getItem("access_token");
-      await axios.delete(`${API_URL}/products/${product.id}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      await api.delete(`/products/${product.id}`);
       toast.success("Produit supprimé avec succès !");
       if (onDeleted) onDeleted(product.id);
       else window.location.reload();
