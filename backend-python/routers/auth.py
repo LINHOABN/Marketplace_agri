@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status, Query, Request
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError
+import uuid
 from database import get_db
 from dependencies import get_current_user
 from utils.security import verify_password, get_password_hash
@@ -128,39 +129,43 @@ async def register(req: RegisterRequest, request: Request, db: Session = Depends
     if not display_name:
         raise HTTPException(status_code=400, detail="Le nom est obligatoire.")
     hashed_password = get_password_hash(req.password)
+    new_user_id = str(uuid.uuid4())
+    new_role_id = str(uuid.uuid4())
 
     try:
         user_params = {
+            "id": new_user_id,
             "name": display_name,
             "email": req.email,
             "password": hashed_password,
             "phone": req.phone,
+            "location": req.location or "Cameroun",
         }
-        if req.location:
-            user_query = text("""
-                INSERT INTO users (full_name, email, password_hash, phone, location, created_at)
-                VALUES (:name, :email, :password, :phone, :location, NOW())
-                RETURNING id, full_name, email
-            """)
-            user_params["location"] = req.location
-        else:
-            user_query = text("""
-                INSERT INTO users (full_name, email, password_hash, phone, created_at)
-                VALUES (:name, :email, :password, :phone, NOW())
-                RETURNING id, full_name, email
-            """)
+
+        # 1. Création de l'utilisateur avec ID explicite
+        user_query = text("""
+            INSERT INTO users (id, full_name, email, password_hash, phone, location, created_at)
+            VALUES (:id, :name, :email, :password, :phone, :location, NOW())
+            RETURNING id, full_name, email
+        """)
         user_res = db.execute(user_query, user_params).mappings().first()
 
+        # 2. Attribution du rôle avec ID explicite
         role = "buyer"
-
         role_query = text("""
-            INSERT INTO user_roles (user_id, role)
-            VALUES (:user_id, CAST(:role AS user_role))
+            INSERT INTO user_roles (id, user_id, role, created_at)
+            VALUES (:role_id, :user_id, CAST(:role AS user_role), NOW())
         """)
-        db.execute(role_query, {"user_id": user_res["id"], "role": role})
+        db.execute(role_query, {
+            "role_id": new_role_id,
+            "user_id": user_res["id"],
+            "role": role
+        })
+        
         db.commit()
 
-        payload = _token_response(
+        # 3. Génération de la réponse
+        return _token_response(
             db,
             {
                 "id": str(user_res["id"]),
@@ -170,7 +175,6 @@ async def register(req: RegisterRequest, request: Request, db: Session = Depends
             },
             request,
         )
-        return payload
     except IntegrityError as e:
         db.rollback()
         error_msg = str(e.orig)
@@ -188,8 +192,11 @@ async def register(req: RegisterRequest, request: Request, db: Session = Depends
         raise
     except Exception as e:
         db.rollback()
-        print(f"Register error: {e}")
-        raise HTTPException(status_code=500, detail="Erreur lors de l'inscription.")
+        # Diagnostic détaillé pour la production (log uniquement, on renvoie une erreur propre au client)
+        print(f"CRITICAL REGISTER ERROR: {str(e)}")
+        # On renvoie le détail de l'erreur PostgreSQL pour le debug final
+        error_detail = f"Erreur serveur : {str(e)}"
+        raise HTTPException(status_code=500, detail=error_detail)
 
 
 @router.post("/refresh")
