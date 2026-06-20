@@ -15,16 +15,3 @@ async def get_system_settings(db: Session = Depends(get_db)):
         "privacy_url": "/privacy",
         "app_version": "2.1.0"
     }
-
-@router.get("/init-db")
-async def initialize_database(key: str = None):
-    """Initialise la base de données (Tables et Enums)."""
-    if key != "agrimarche2026":
-        return {"error": "Clé d'initialisation invalide."}
-    
-    from init_database import run
-    try:
-        run()
-        return {"success": True, "message": "Base de données initialisée avec succès."}
-    except Exception as e:
-        return {"success": False, "error": str(e)}
