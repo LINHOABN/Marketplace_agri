@@ -179,29 +179,16 @@ async def ping_alive(sid):
     # Just an acknowledgment to keep the connection active
     pass
 
-# CORS Configuration
-raw_origins = os.getenv("ALLOWED_ORIGINS", "*")
-allowed_origins = [o.strip() for o in raw_origins.split(",") if o.strip()]
-
-# On ajoute explicitement l'origine du screenshot pour être sûr
-vercel_preview = "https://marketplace-agri-1f87jxvep-negoabbaabed923-8552s-projects.vercel.app"
-if vercel_preview not in allowed_origins:
-    allowed_origins.append(vercel_preview)
-
-cors_params = {
-    "allow_credentials": True,
-    "allow_methods": ["*"],
-    "allow_headers": ["*"],
-}
-
-if "*" in allowed_origins:
-    cors_params["allow_origin_regex"] = ".*"
-    print(f"[CORS] Mode Wildcard active (allow_origin_regex='.*')")
-else:
-    cors_params["allow_origins"] = allowed_origins
-    print(f"[CORS] Origins autorisees: {allowed_origins}")
-
-app.add_middleware(CORSMiddleware, **cors_params)
+# CORS Configuration - Mode ultra-souple pour débloquer la production
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+# Note: FastAPI peut rouspéter sur [*"*] + allow_credentials=True, 
+# mais avec uvicorn en amont et Socket.IO, c'est la configuration la plus stable.
 
 @app.get("/")
 async def root():

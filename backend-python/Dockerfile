@@ -29,5 +29,5 @@ RUN mkdir -p uploads
 EXPOSE 8000
 
 # Commande de lancement (Uvicorn avec Socket.IO)
-# On force le port 10000 qui est le standard Render pour les Web Services
-CMD ["uvicorn", "main:socket_app", "--host", "0.0.0.0", "--port", "10000"]
+# On utilise le port dynamique $PORT (par défaut 8000 si non défini)
+CMD uvicorn main:socket_app --host 0.0.0.0 --port ${PORT:-8000}
