@@ -192,11 +192,12 @@ async def register(req: RegisterRequest, request: Request, db: Session = Depends
         raise
     except Exception as e:
         db.rollback()
-        # Diagnostic détaillé pour la production (log uniquement, on renvoie une erreur propre au client)
-        print(f"CRITICAL REGISTER ERROR: {str(e)}")
-        # On renvoie le détail de l'erreur PostgreSQL pour le debug final
-        error_detail = f"Erreur serveur : {str(e)}"
-        raise HTTPException(status_code=500, detail=error_detail)
+        # Diagnostic TRES VISIBLE pour la console Render
+        print("\n" + "="*50)
+        print(f"!!! CRITICAL REGISTER ERROR !!!")
+        print(f"Détail: {str(e)}")
+        print("="*50 + "\n")
+        raise HTTPException(status_code=500, detail=f"Erreur technique : {str(e)}")
 
 
 @router.post("/refresh")
