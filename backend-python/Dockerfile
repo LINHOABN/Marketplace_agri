@@ -29,4 +29,5 @@ RUN mkdir -p uploads
 EXPOSE 8000
 
 # Commande de lancement (Uvicorn avec Socket.IO)
-CMD ["uvicorn", "main:socket_app", "--host", "0.0.0.0", "--port", "8000"]
+# On utilise le format shell pour permettre l'expansion de la variable $PORT par Render
+CMD uvicorn main:socket_app --host 0.0.0.0 --port ${PORT:-8000}
