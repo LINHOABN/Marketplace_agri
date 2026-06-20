@@ -5,8 +5,12 @@
 import axios, { type InternalAxiosRequestConfig } from "axios";
 import { API_URL } from "./config";
 
+// On définit la baseURL sans le suffixe /api pour éviter les conflits de merging
+// avec les chemins commençant par un slash (Axios remplace le chemin de la baseURL sinon).
+const baseRoot = API_URL.replace(/\/api\/?$/, "");
+
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: baseRoot,
 });
 
 let isRefreshing = false;
@@ -30,6 +34,7 @@ async function tryRefreshToken(): Promise<string | null> {
   const refresh = getAuthItem("refresh_token");
   if (!refresh) return null;
   try {
+    // On utilise axios direct pour éviter l'intercepteur de boucle
     const res = await axios.post(`${API_URL}/auth/refresh`, {
       refresh_token: refresh,
     });
@@ -49,6 +54,14 @@ async function tryRefreshToken(): Promise<string | null> {
 
 api.interceptors.request.use(
   (config) => {
+    // NORMALISATION : Si l'URL n'est pas absolue et ne commence pas par /api, on l'ajoute.
+    // Cela permet aux appels comme api.get("/auth/me") de devenir /api/auth/me
+    // et d'être correctement joints à la baseURL (le domaine racine).
+    if (config.url && !config.url.startsWith("http") && !config.url.startsWith("/api")) {
+      const separator = config.url.startsWith("/") ? "" : "/";
+      config.url = `/api${separator}${config.url}`;
+    }
+
     const token = getAuthItem("access_token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -101,6 +114,7 @@ api.interceptors.response.use(
         return api(originalRequest);
       }
 
+      // Logout on refresh failure
       sessionStorage.removeItem("access_token");
       sessionStorage.removeItem("refresh_token");
       sessionStorage.removeItem("session_id");
