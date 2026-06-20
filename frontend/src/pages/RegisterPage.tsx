@@ -13,7 +13,7 @@ import {
   ShoppingBag,
   Truck,
 } from "lucide-react";
-import { useUser } from "../context/UserContext";
+import { useUser } from "../hooks/useUser";
 import "./RegisterPage.css";
 
 const CAMEROON_REGIONS = [

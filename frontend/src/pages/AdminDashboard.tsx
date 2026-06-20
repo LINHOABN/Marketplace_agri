@@ -9,7 +9,7 @@ import {
   TrendingUp, LogOut, ShieldCheck, ArrowRight, ChevronRight, Layout, Activity
 } from "lucide-react";
 import api from "../api";
-import { useUser } from "../context/UserContext";
+import { useUser } from "../hooks/useUser";
 import "./AdminDashboard.css";
 
 const COLORS = ["#2E7D32", "#1976D2", "#FFA000", "#D32F2F"];

@@ -161,7 +161,7 @@ export default function HistoryPage() {
                   <button
                     className="action-btn download"
                     onClick={() => {
-                      const token = localStorage.getItem("token");
+                      const token = sessionStorage.getItem("access_token") || localStorage.getItem("access_token");
                       window.open(`${API_URL}/invoices/${order.id}/download?token=${token}`);
                     }}
                   >

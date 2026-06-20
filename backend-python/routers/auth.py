@@ -89,13 +89,19 @@ def _token_response(db: Session, user: dict, request: Request) -> dict:
 async def login(req: LoginRequest, request: Request, db: Session = Depends(get_db)):
     login_id = (req.identifier or req.email or "").strip()
     
-    # Normalisation du téléphone (Cameroun) : si commence par 6/2 et fait 9 chiffres, ajouter +237
-    # Si commencé par 237 sans +, ajouter +
+    # Normalisation du téléphone (Cameroun)
     norm_phone = login_id
-    if login_id.isdigit() and len(login_id) == 9:
-        norm_phone = "+237" + login_id
-    elif login_id.startswith("237") and len(login_id) == 12:
-        norm_phone = "+" + login_id
+    # On retire tout sauf les chiffres et le + pour la comparaison
+    digits_only = "".join(filter(str.isdigit, login_id))
+    
+    if len(digits_only) == 9:
+        norm_phone = "+237" + digits_only
+    elif len(digits_only) == 12 and digits_only.startswith("237"):
+        norm_phone = "+" + digits_only
+    
+    # login_id brute peut déjà contenir le +
+    if not norm_phone.startswith("+") and norm_phone.startswith("237") and len(norm_phone) == 12:
+        norm_phone = "+" + norm_phone
 
     query = text("""
         SELECT u.*, r.role

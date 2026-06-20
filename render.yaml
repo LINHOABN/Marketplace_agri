@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: agrimarche-api
+    env: docker
+    dockerContext: ./backend-python
+    dockerfilePath: Dockerfile
+    plan: free
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: agrimarche-db
+          property: connectionString
+      - key: PORT
+        value: 8000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ALLOWED_ORIGINS
+        value: https://agrimarche.vercel.app # Mettez à jour avec votre URL Vercel réelle
+      - key: ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "1440"
+      - key: BLOB_READ_WRITE_TOKEN
+        sync: false # À remplir manuellement depuis Vercel
+
+databases:
+  - name: agrimarche-db
+    plan: free
+    databaseName: agrimarche
+    user: agrimarche_user

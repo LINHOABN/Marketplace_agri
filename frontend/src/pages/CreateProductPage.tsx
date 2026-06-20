@@ -6,7 +6,7 @@ import { toast } from "react-hot-toast";
 import { API_URL } from "../config";
 import "./CreateProductPage.css";
 
-import { useUser } from "../context/UserContext";
+import { useUser } from "../hooks/useUser";
 import { usePersistentState } from "../hooks/usePersistentState";
 
 export default function CreateProductPage() {

@@ -1,5 +1,5 @@
 import api from "../api";
-import { useUser } from "../context/UserContext";
+import { useUser } from "../hooks/useUser";
 import { toast } from "react-hot-toast";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";

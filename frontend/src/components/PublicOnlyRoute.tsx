@@ -1,5 +1,5 @@
 import { Navigate } from "react-router-dom";
-import { useUser } from "../context/UserContext";
+import { useUser } from "../hooks/useUser";
 
 /** Page publique visible uniquement si non connecté (ex: landing). */
 export default function PublicOnlyRoute({ children }: { children: React.ReactNode }) {

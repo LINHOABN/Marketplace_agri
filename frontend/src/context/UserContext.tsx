@@ -1,7 +1,7 @@
 /**
  * UserContext - Contexte global pour la gestion du profil utilisateur
  */
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
+import { createContext, useState, useEffect, type ReactNode } from "react";
 import api from "../api";
 import { API_URL } from "../config";
 
@@ -35,7 +35,7 @@ interface UserContextType {
   logout: () => void;
 }
 
-const UserContext = createContext<UserContextType>({
+export const UserContext = createContext<UserContextType>({
   currentUser: null,
   loading: true,
   fetchError: false,
@@ -108,23 +108,15 @@ export function UserProvider({ children }: { children: ReactNode }) {
     refreshUser();
   }, []);
 
-  useEffect(() => {
-    // On ne synchronise plus automatiquement les onglets pour permettre le multi-compte
-    // (Un onglet peut être Vendeur A et l'autre Livreur B)
-  }, []);
-
   const switchRole = async (newRole: string) => {
     try {
       const res = await api.post("/auth/switch-role", { new_role: newRole });
-
       const { access_token, refresh_token, session_id } = res.data;
 
-      // Mise à jour de la session de l'onglet ACTUEL
       if (access_token) sessionStorage.setItem("access_token", access_token);
       if (refresh_token) sessionStorage.setItem("refresh_token", refresh_token);
       if (session_id) sessionStorage.setItem("session_id", session_id);
 
-      // Mise à jour de la persistance globale (dernier compte utilisé)
       if (access_token) localStorage.setItem("access_token", access_token);
       if (refresh_token) localStorage.setItem("refresh_token", refresh_token);
       if (session_id) localStorage.setItem("session_id", session_id);
@@ -139,9 +131,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const logout = async () => {
     try {
       await api.post("/auth/logout");
-    } catch {
-      /* session déjà invalide */
-    }
+    } catch { }
     sessionStorage.removeItem("access_token");
     sessionStorage.removeItem("refresh_token");
     sessionStorage.removeItem("session_id");
@@ -158,5 +148,3 @@ export function UserProvider({ children }: { children: ReactNode }) {
     </UserContext.Provider>
   );
 }
-
-export const useUser = () => useContext(UserContext);

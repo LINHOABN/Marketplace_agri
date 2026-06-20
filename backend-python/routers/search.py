@@ -101,23 +101,15 @@ async def search_all(
     conditions = ["1=1"]
 
     if q:
-        q_fold = fold_accents(q)
         conditions.append(
             """(
-                LOWER(p.name) LIKE LOWER(:q)
-                OR LOWER(COALESCE(p.description, '')) LIKE LOWER(:q)
-                OR LOWER(translate(p.name,
-                    'àáâäãåèéêëìíîïòóôöõùúûüçÀÁÂÄÃÅÈÉÊËÌÍÎÏÒÓÔÖÕÙÚÛÜÇ',
-                    'aaaaaaeeeeiiiioooooouuuucAAAAAAEEEEIIIIOOOOOOUUUUC'
-                )) LIKE :q_fold
-                OR LOWER(translate(COALESCE(p.description, ''),
-                    'àáâäãåèéêëìíîïòóôöõùúûüçÀÁÂÄÃÅÈÉÊËÌÍÎÏÒÓÔÖÕÙÚÛÜÇ',
-                    'aaaaaaeeeeiiiioooooouuuucAAAAAAEEEEIIIIOOOOOOUUUUC'
-                )) LIKE :q_fold
+                p.name ILIKE :q
+                OR p.description ILIKE :q
+                OR c.name ILIKE :q
+                OR s.name ILIKE :q
             )"""
         )
         params["q"] = f"%{q}%"
-        params["q_fold"] = f"%{q_fold.lower()}%"
 
     if category:
         conditions.append("LOWER(COALESCE(c.name, '')) LIKE LOWER(:cat)")

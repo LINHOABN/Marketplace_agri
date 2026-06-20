@@ -4,7 +4,7 @@ import ConversationsPage from "./ConversationsPage";
 import ChatPage from "./ChatPage";
 import { Leaf, ShieldCheck, Sparkles } from "lucide-react";
 import "./MessengerPage.css";
-import { useSocket } from "../context/SocketContext";
+import { useSocket } from "../hooks/useSocket";
 import { usePersistentState } from "../hooks/usePersistentState";
 
 export default function MessengerPage() {

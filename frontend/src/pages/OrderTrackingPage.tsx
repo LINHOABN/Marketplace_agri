@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import io from "socket.io-client";
-import { useUser } from "../context/UserContext";
+import { useUser } from "../hooks/useUser";
 import "./OrderTrackingPage.css";
 
 export default function OrderTrackingPage() {

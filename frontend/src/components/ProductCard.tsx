@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { API_URL } from "../config";
 import axios from "axios";
 import api from "../api";
-import { useUser } from "../context/UserContext";
+import { useUser } from "../hooks/useUser";
 import toast from "react-hot-toast";
 import ConfirmModal from "./ConfirmModal";
 import ReportModal from "./ReportModal";

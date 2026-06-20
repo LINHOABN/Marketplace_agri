@@ -50,9 +50,9 @@ export default function SearchPage() {
     const delayDebounce = setTimeout(async () => {
       try {
         const token = localStorage.getItem("access_token");
-        const res = await axios.get(`${API_URL}/search/suggest?q=${query}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        const headers: Record<string, string> = {};
+        if (token) headers["Authorization"] = `Bearer ${token}`;
+        const res = await axios.get(`${API_URL}/search/suggest?q=${query}`, { headers });
         setSuggestions(res.data);
       } catch (err) {
         console.error("Suggestions error", err);
@@ -60,6 +60,7 @@ export default function SearchPage() {
     }, 200);
     return () => clearTimeout(delayDebounce);
   }, [query]);
+
 
   const handleSearch = (searchTerm: string) => {
     const q = searchTerm || query;

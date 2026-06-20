@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, MapPin, Leaf, Globe, ShoppingBag, Eye, Clock, ArrowRight } from "lucide-react";
+import { Search, MapPin, Leaf, ArrowRight, ChevronRight } from "lucide-react";
 import api from "../api";
 import { API_URL } from "../config";
+import CompactProductCard from "../components/CompactProductCard";
 import Footer from "../components/Footer/Footer";
 import "./WelcomePage.css";
 
@@ -26,6 +27,15 @@ export default function WelcomePage() {
   const navigate = useNavigate();
   const [items, setItems] = useState<FeedItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      navigate(`/search/results?q=${encodeURIComponent(searchQuery.trim())}`);
+    } else {
+      navigate("/login");
+    }
+  };
 
   useEffect(() => {
     const fetchFeed = async () => {
@@ -84,13 +94,19 @@ export default function WelcomePage() {
         <div className="search-bar-container">
           <div className="search-field">
             <Search size={24} className="field-icon" />
-            <input type="text" placeholder="Tomates, Volaille, Engrais..." />
+            <input
+              type="text"
+              placeholder="Tomates, Volaille, Engrais..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+            />
           </div>
           <div className="search-field border-left">
             <MapPin size={24} className="field-icon" />
             <input type="text" placeholder="Toutes les régions" />
           </div>
-          <button className="search-submit-btn" onClick={() => navigate("/login")}>
+          <button className="search-submit-btn" onClick={handleSearch}>
             Découvrir
           </button>
         </div>
@@ -111,50 +127,33 @@ export default function WelcomePage() {
           </div>
 
           {loading ? (
-            <div style={{ display: 'flex', justifyContent: 'center', padding: '40px' }}>
-              <div className="loader"></div>
+            <div style={{ display: 'flex', gap: '12px', padding: '8px 0', overflowX: 'hidden' }}>
+              {[1, 2, 3, 4].map(i => <div key={i} className="welcome-card-skeleton" />)}
             </div>
           ) : (
-            <div className="featured-grid">
-              {items.slice(0, 8).map((item) => (
-                <div
-                  key={`${item.item_type}-${item.id}`}
-                  className="publication-card"
-                  onClick={() => {
-                    if (item.item_type === 'product') {
-                      navigate(`/product/${item.id}`);
-                    } else {
-                      navigate("/login"); // For posts, we might still need login or a public view
-                    }
-                  }}
-                >
-                  <div className="card-media">
-                    <img src={getImageUrl(item)} alt={item.name || "Publication"} />
-                    <span className="item-badge">
-                      {item.item_type === 'product' ? 'Produit' : 'Post'}
-                    </span>
+            <div className="welcome-h-lane">
+              {items
+                .filter(item => item.item_type === 'product')
+                .slice(0, 12)
+                .map((item) => (
+                  <div key={`${item.item_type}-${item.id}`} className="welcome-h-lane-item">
+                    <CompactProductCard
+                      product={{
+                        id: item.id,
+                        name: item.name || "Produit",
+                        price: item.price || 0,
+                        image: item.image || "",
+                        sellerName: item.shop_name || item.author_name || "",
+                        category: item.category,
+                      }}
+                    />
                   </div>
-                  <div className="card-body">
-                    <div className="author-info">
-                      <img src={getAvatarUrl(item)} alt="" className="author-avatar" />
-                      <span className="author-name">{item.author_name || item.shop_name}</span>
-                    </div>
-                    <h3 className="pub-title">{item.name || item.content}</h3>
-                    {item.item_type === 'product' && (
-                      <p className="pub-price">{item.price?.toLocaleString()} CFA</p>
-                    )}
-                    <div className="pub-meta">
-                      <div className="time-ago">
-                        <Clock size={12} style={{ marginRight: '4px', verticalAlign: 'middle' }} />
-                        {new Date(item.created_at).toLocaleDateString()}
-                      </div>
-                      <div className="view-btn">
-                        Détails <Eye size={14} />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
+                ))}
+              {/* Voir plus */}
+              <div className="welcome-see-more-card" onClick={() => navigate("/login")}>
+                <ChevronRight size={28} />
+                <span>Voir tout</span>
+              </div>
             </div>
           )}
         </section>

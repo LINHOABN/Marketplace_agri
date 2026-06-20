@@ -17,7 +17,7 @@ import {
 import ProductCard from "../components/ProductCard";
 import { toast } from "react-hot-toast";
 import { API_URL } from "../config";
-import { useUser } from "../hooks/useUser";
+import { useUser } from '../hooks/useUser';
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";

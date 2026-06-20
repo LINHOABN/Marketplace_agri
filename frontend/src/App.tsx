@@ -147,6 +147,8 @@ function App() {
 
         <Route path="/product/:id" element={<MainLayout><ProductDetailPage /></MainLayout>} />
         <Route path="/shop/:id" element={<MainLayout><ShopPage /></MainLayout>} />
+        <Route path="/search" element={<MainLayout><SearchPage /></MainLayout>} />
+        <Route path="/search/results" element={<MainLayout><SearchResultsPage /></MainLayout>} />
 
         {/* --- ROUTES PRIVÉES (Acheteur / Vendeur / Livreur) --- */}
         {/* On entoure chaque page privée de <AppLayout> pour avoir le menu constant */}
@@ -169,8 +171,6 @@ function App() {
         <Route path="/seller/dashboard" element={<ProtectedRoute allowedRoles={['seller']}><MainLayout><SellerDashboard /></MainLayout></ProtectedRoute>} />
         <Route path="/deliverer/dashboard" element={<ProtectedRoute allowedRoles={['deliverer']}><MainLayout><DelivererDashboard /></MainLayout></ProtectedRoute>} />
         <Route path="/wallet" element={<AppLayout><WalletPage /></AppLayout>} />
-        <Route path="/search" element={<AppLayout><SearchPage /></AppLayout>} />
-        <Route path="/search/results" element={<AppLayout><SearchResultsPage /></AppLayout>} />
         <Route path="/stories" element={<AppLayout><StoriesPage /></AppLayout>} />
         <Route path="/conversations" element={<AppLayout><MessengerPage /></AppLayout>} />
         <Route path="/product/create" element={<AppLayout><CreateProductPage /></AppLayout>} />

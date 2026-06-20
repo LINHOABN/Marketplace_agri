@@ -110,7 +110,10 @@ api.interceptors.response.use(
 
       if (
         !window.location.pathname.startsWith("/login") &&
-        window.location.pathname !== "/"
+        window.location.pathname !== "/" &&
+        !window.location.pathname.startsWith("/product/") &&
+        !window.location.pathname.startsWith("/shop/") &&
+        !window.location.pathname.startsWith("/search")
       ) {
         window.location.href = "/login";
       }

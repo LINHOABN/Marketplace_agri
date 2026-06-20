@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Eye, EyeOff, AlertTriangle, Loader2, Leaf } from "lucide-react";
 import { API_URL } from "../config";
-import { useUser } from "../context/UserContext";
+import { useUser } from "../hooks/useUser";
 import "./LoginPage.css";
 
 export default function LoginPage() {
@@ -51,11 +51,16 @@ export default function LoginPage() {
 
     if (!validateForm()) return;
 
-    setIsLoading(true);
+    // Nettoyage de l'identifiant s'il s'agit d'un numéro de téléphone
+    let cleanIdentifier = identifier.trim();
+    if (identifierType === "phone") {
+      // Retire les espaces, points, parenthèses, tirets
+      cleanIdentifier = cleanIdentifier.replace(/[\s.()-]/g, "");
+    }
 
     try {
       const response = await axios.post(`${API_URL}/auth/login`, {
-        identifier,
+        identifier: cleanIdentifier,
         password,
       });
 
@@ -126,7 +131,17 @@ export default function LoginPage() {
               id="identifier"
               type={identifierType === "email" ? "email" : "tel"}
               value={identifier}
-              onChange={(e) => setIdentifier(e.target.value)}
+              onChange={(e) => {
+                const val = e.target.value;
+                setIdentifier(val);
+                // Smart detection: si ça commence par +, 237 ou si c'est que des chiffres/espaces
+                const looksLikePhone = /^[\+0-9\s.-]{8,}$/.test(val) && !val.includes('@');
+                if (looksLikePhone && identifierType === "email") {
+                  setIdentifierType("phone");
+                } else if (val.includes('@') && identifierType === "phone") {
+                  setIdentifierType("email");
+                }
+              }}
               className={`login-input ${error && !identifier ? "error" : ""}`}
               placeholder={
                 identifierType === "email"

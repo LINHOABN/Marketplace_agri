@@ -6,7 +6,7 @@ import {
     Settings, LogOut, ChevronRight, Pencil, RefreshCw
 } from "lucide-react";
 
-import { useUser } from "../context/UserContext";
+import { useUser } from "../hooks/useUser";
 import api from "../api";
 import toast from "react-hot-toast";
 import "./ProfilePage.css";

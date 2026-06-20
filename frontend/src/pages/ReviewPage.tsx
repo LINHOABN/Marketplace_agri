@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { ChevronLeft, Star } from "lucide-react";
 import api from "../api";
-import { useUser } from "../context/UserContext";
+import { useUser } from "../hooks/useUser";
 
 type ReviewLocationState = {
   orderId?: string;

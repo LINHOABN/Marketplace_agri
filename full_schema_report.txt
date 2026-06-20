@@ -1,0 +1,343 @@
+
+--- TABLE: admin_tips ---
+  id (integer) - Nullable: NO, Default: nextval('admin_tips_id_seq'::regclass)
+  emoji (character varying) - Nullable: YES, Default: None
+  title (character varying) - Nullable: NO, Default: None
+  text (text) - Nullable: NO, Default: None
+  created_at (timestamp without time zone) - Nullable: YES, Default: now()
+  author_id (uuid) - Nullable: YES, Default: None
+
+--- TABLE: audit_logs ---
+  id (uuid) - Nullable: NO, Default: gen_random_uuid()
+  user_id (uuid) - Nullable: YES, Default: None
+  action (character varying) - Nullable: NO, Default: None
+  entity_type (character varying) - Nullable: NO, Default: None
+  entity_id (uuid) - Nullable: YES, Default: None
+  details (jsonb) - Nullable: YES, Default: None
+  created_at (timestamp with time zone) - Nullable: YES, Default: now()
+
+--- TABLE: categories ---
+  id (uuid) - Nullable: NO, Default: gen_random_uuid()
+  name (character varying) - Nullable: NO, Default: None
+  description (text) - Nullable: YES, Default: None
+  icon_url (character varying) - Nullable: YES, Default: None
+  created_at (timestamp with time zone) - Nullable: YES, Default: now()
+
+--- TABLE: conversations ---
+  id (uuid) - Nullable: NO, Default: uuid_generate_v4()
+  user1_id (uuid) - Nullable: YES, Default: None
+  user2_id (uuid) - Nullable: YES, Default: None
+  product_id (uuid) - Nullable: YES, Default: None
+  created_at (timestamp with time zone) - Nullable: YES, Default: CURRENT_TIMESTAMP
+  deleted_by_user1 (boolean) - Nullable: YES, Default: false
+  deleted_by_user2 (boolean) - Nullable: YES, Default: false
+  user1_deleted_at (timestamp without time zone) - Nullable: YES, Default: None
+  user2_deleted_at (timestamp without time zone) - Nullable: YES, Default: None
+
+--- TABLE: disputes ---
+  id (uuid) - Nullable: NO, Default: gen_random_uuid()
+  order_id (uuid) - Nullable: NO, Default: None
+  initiator_id (uuid) - Nullable: NO, Default: None
+  status (USER-DEFINED) - Nullable: NO, Default: 'open'::dispute_status
+  reason (text) - Nullable: NO, Default: None
+  resolution (text) - Nullable: YES, Default: None
+  created_at (timestamp with time zone) - Nullable: YES, Default: now()
+  updated_at (timestamp with time zone) - Nullable: YES, Default: now()
+
+--- TABLE: invoices ---
+  id (uuid) - Nullable: NO, Default: gen_random_uuid()
+  order_id (uuid) - Nullable: NO, Default: None
+  status (USER-DEFINED) - Nullable: NO, Default: 'generated'::invoice_status
+  pdf_url (character varying) - Nullable: YES, Default: None
+  created_at (timestamp with time zone) - Nullable: YES, Default: now()
+
+--- TABLE: kyc_logs ---
+  id (uuid) - Nullable: NO, Default: gen_random_uuid()
+  user_id (uuid) - Nullable: YES, Default: None
+  admin_id (uuid) - Nullable: YES, Default: None
+  action (character varying) - Nullable: YES, Default: None
+  note (text) - Nullable: YES, Default: None
+  created_at (timestamp without time zone) - Nullable: YES, Default: now()
+
+--- TABLE: messages ---
+  id (uuid) - Nullable: NO, Default: gen_random_uuid()
+  sender_id (uuid) - Nullable: NO, Default: None
+  receiver_id (uuid) - Nullable: YES, Default: None
+  content (text) - Nullable: NO, Default: None
+  is_read (boolean) - Nullable: YES, Default: false
+  created_at (timestamp with time zone) - Nullable: YES, Default: now()
+  conversation_id (uuid) - Nullable: YES, Default: None
+  type (character varying) - Nullable: YES, Default: 'text'::character varying
+  audio_url (text) - Nullable: YES, Default: None
+  media_url (text) - Nullable: YES, Default: None
+  offer_price (numeric) - Nullable: YES, Default: None
+  offer_status (character varying) - Nullable: YES, Default: 'pending'::character varying
+  offer_quantity (numeric) - Nullable: YES, Default: None
+
+--- TABLE: negotiations ---
+  id (uuid) - Nullable: NO, Default: uuid_generate_v4()
+  product_id (uuid) - Nullable: YES, Default: None
+  buyer_id (uuid) - Nullable: YES, Default: None
+  offered_price (numeric) - Nullable: YES, Default: None
+  status (character varying) - Nullable: YES, Default: 'pending'::character varying
+  created_at (timestamp with time zone) - Nullable: YES, Default: CURRENT_TIMESTAMP
+
+--- TABLE: notifications ---
+  id (integer) - Nullable: NO, Default: nextval('notifications_id_seq'::regclass)
+  user_id (uuid) - Nullable: YES, Default: None
+  type (character varying) - Nullable: NO, Default: None
+  title (character varying) - Nullable: NO, Default: None
+  content (text) - Nullable: YES, Default: None
+  is_read (boolean) - Nullable: YES, Default: false
+  created_at (timestamp without time zone) - Nullable: YES, Default: CURRENT_TIMESTAMP
+  target_id (character varying) - Nullable: YES, Default: None
+
+--- TABLE: orders ---
+  id (uuid) - Nullable: NO, Default: gen_random_uuid()
+  buyer_id (uuid) - Nullable: NO, Default: None
+  shop_id (uuid) - Nullable: NO, Default: None
+  status (USER-DEFINED) - Nullable: NO, Default: 'pending'::order_status
+  total_amount (numeric) - Nullable: NO, Default: None
+  delivery_address (text) - Nullable: YES, Default: None
+  created_at (timestamp with time zone) - Nullable: YES, Default: now()
+  updated_at (timestamp with time zone) - Nullable: YES, Default: now()
+  product_id (uuid) - Nullable: YES, Default: None
+  quantity (numeric) - Nullable: YES, Default: 1
+  deliverer_id (uuid) - Nullable: YES, Default: None
+  payment_method (character varying) - Nullable: YES, Default: None
+  delivery_vendor_id (uuid) - Nullable: YES, Default: None
+  delivery_lat (double precision) - Nullable: YES, Default: None
+  delivery_lng (double precision) - Nullable: YES, Default: None
+  delivery_fee (numeric) - Nullable: YES, Default: 0
+  commission_amount (numeric) - Nullable: YES, Default: 0
+  seller_amount (numeric) - Nullable: YES, Default: 0
+
+--- TABLE: platform_fees ---
+  id (uuid) - Nullable: NO, Default: gen_random_uuid()
+  transaction_id (uuid) - Nullable: YES, Default: None
+  rate_percent (numeric) - Nullable: NO, Default: None
+  fee_amount (numeric) - Nullable: NO, Default: None
+  created_at (timestamp with time zone) - Nullable: YES, Default: now()
+
+--- TABLE: platform_settings ---
+  id (uuid) - Nullable: NO, Default: gen_random_uuid()
+  key (character varying) - Nullable: NO, Default: None
+  value (character varying) - Nullable: NO, Default: None
+  updated_at (timestamp without time zone) - Nullable: YES, Default: now()
+
+--- TABLE: post_comments ---
+  id (integer) - Nullable: NO, Default: nextval('post_comments_id_seq'::regclass)
+  post_id (character varying) - Nullable: NO, Default: None
+  user_id (uuid) - Nullable: YES, Default: None
+  content (text) - Nullable: NO, Default: None
+  created_at (timestamp without time zone) - Nullable: YES, Default: CURRENT_TIMESTAMP
+
+--- TABLE: post_likes ---
+  id (integer) - Nullable: NO, Default: nextval('post_likes_id_seq'::regclass)
+  post_id (character varying) - Nullable: NO, Default: None
+  user_id (uuid) - Nullable: YES, Default: None
+  created_at (timestamp without time zone) - Nullable: YES, Default: CURRENT_TIMESTAMP
+
+--- TABLE: posts ---
+  id (uuid) - Nullable: NO, Default: gen_random_uuid()
+  user_id (uuid) - Nullable: NO, Default: None
+  type (USER-DEFINED) - Nullable: NO, Default: None
+  content (text) - Nullable: NO, Default: None
+  media_url (character varying) - Nullable: YES, Default: None
+  created_at (timestamp with time zone) - Nullable: YES, Default: now()
+  expires_at (timestamp with time zone) - Nullable: YES, Default: None
+  category (character varying) - Nullable: YES, Default: None
+
+--- TABLE: product_reviews ---
+  id (uuid) - Nullable: NO, Default: gen_random_uuid()
+  reviewer_id (uuid) - Nullable: NO, Default: None
+  product_id (uuid) - Nullable: NO, Default: None
+  rating (integer) - Nullable: NO, Default: None
+  comment (text) - Nullable: YES, Default: None
+  created_at (timestamp with time zone) - Nullable: YES, Default: now()
+
+--- TABLE: products ---
+  id (uuid) - Nullable: NO, Default: gen_random_uuid()
+  shop_id (uuid) - Nullable: NO, Default: None
+  category_id (uuid) - Nullable: YES, Default: None
+  name (character varying) - Nullable: NO, Default: None
+  description (text) - Nullable: YES, Default: None
+  price (numeric) - Nullable: NO, Default: None
+  unit (USER-DEFINED) - Nullable: NO, Default: None
+  quantity_available (numeric) - Nullable: NO, Default: None
+  image_url (character varying) - Nullable: YES, Default: None
+  created_at (timestamp with time zone) - Nullable: YES, Default: now()
+  updated_at (timestamp with time zone) - Nullable: YES, Default: now()
+  location (character varying) - Nullable: YES, Default: None
+  media_urls (ARRAY) - Nullable: YES, Default: '{}'::text[]
+  latitude (double precision) - Nullable: YES, Default: None
+  longitude (double precision) - Nullable: YES, Default: None
+  managed_by_id (uuid) - Nullable: YES, Default: None
+
+--- TABLE: refresh_tokens ---
+  token (character varying) - Nullable: NO, Default: None
+  user_id (uuid) - Nullable: NO, Default: None
+  expires_at (timestamp with time zone) - Nullable: NO, Default: None
+
+--- TABLE: reviews ---
+  id (uuid) - Nullable: NO, Default: gen_random_uuid()
+  reviewer_id (uuid) - Nullable: NO, Default: None
+  shop_id (uuid) - Nullable: NO, Default: None
+  order_id (uuid) - Nullable: NO, Default: None
+  rating (integer) - Nullable: NO, Default: None
+  comment (text) - Nullable: YES, Default: None
+  created_at (timestamp with time zone) - Nullable: YES, Default: now()
+
+--- TABLE: role_requests ---
+  id (uuid) - Nullable: NO, Default: gen_random_uuid()
+  user_id (uuid) - Nullable: YES, Default: None
+  requested_role (character varying) - Nullable: NO, Default: None
+  status (character varying) - Nullable: YES, Default: 'pending'::character varying
+  note (text) - Nullable: YES, Default: None
+  created_at (timestamp without time zone) - Nullable: YES, Default: now()
+  updated_at (timestamp without time zone) - Nullable: YES, Default: None
+
+--- TABLE: search_catalog ---
+  id (uuid) - Nullable: NO, Default: gen_random_uuid()
+  category (character varying) - Nullable: NO, Default: None
+  subcategory (character varying) - Nullable: NO, Default: None
+  common_name (character varying) - Nullable: NO, Default: None
+  scientific_name (character varying) - Nullable: YES, Default: None
+  breed_variety (character varying) - Nullable: YES, Default: None
+  synonyms (ARRAY) - Nullable: YES, Default: None
+  search_keywords (ARRAY) - Nullable: YES, Default: None
+  local_names (ARRAY) - Nullable: YES, Default: None
+  typos (ARRAY) - Nullable: YES, Default: None
+  created_at (timestamp without time zone) - Nullable: YES, Default: CURRENT_TIMESTAMP
+
+--- TABLE: seller_driver_links ---
+  seller_id (uuid) - Nullable: NO, Default: None
+  deliverer_id (uuid) - Nullable: NO, Default: None
+  created_at (timestamp without time zone) - Nullable: YES, Default: now()
+
+--- TABLE: shops ---
+  id (uuid) - Nullable: NO, Default: gen_random_uuid()
+  seller_id (uuid) - Nullable: NO, Default: None
+  name (character varying) - Nullable: NO, Default: None
+  description (text) - Nullable: YES, Default: None
+  logo_url (character varying) - Nullable: YES, Default: None
+  created_at (timestamp with time zone) - Nullable: YES, Default: now()
+  updated_at (timestamp with time zone) - Nullable: YES, Default: now()
+  status (character varying) - Nullable: YES, Default: 'active'::character varying
+  lat (double precision) - Nullable: YES, Default: None
+  lng (double precision) - Nullable: YES, Default: None
+  specialties (text) - Nullable: YES, Default: None
+  banner_url (character varying) - Nullable: YES, Default: None
+
+--- TABLE: transactions ---
+  id (uuid) - Nullable: NO, Default: gen_random_uuid()
+  wallet_id (uuid) - Nullable: NO, Default: None
+  order_id (uuid) - Nullable: YES, Default: None
+  type (USER-DEFINED) - Nullable: NO, Default: None
+  amount (numeric) - Nullable: NO, Default: None
+  status (USER-DEFINED) - Nullable: NO, Default: 'pending'::transaction_status
+  reference (character varying) - Nullable: YES, Default: None
+  created_at (timestamp with time zone) - Nullable: YES, Default: now()
+  updated_at (timestamp with time zone) - Nullable: YES, Default: now()
+  description (text) - Nullable: YES, Default: None
+  user_id (uuid) - Nullable: YES, Default: None
+
+--- TABLE: user_roles ---
+  id (uuid) - Nullable: NO, Default: gen_random_uuid()
+  user_id (uuid) - Nullable: NO, Default: None
+  role (USER-DEFINED) - Nullable: NO, Default: None
+  created_at (timestamp with time zone) - Nullable: YES, Default: now()
+
+--- TABLE: user_sessions ---
+  id (uuid) - Nullable: NO, Default: gen_random_uuid()
+  user_id (uuid) - Nullable: NO, Default: None
+  refresh_token_hash (character varying) - Nullable: NO, Default: None
+  device_label (character varying) - Nullable: YES, Default: None
+  ip_address (character varying) - Nullable: YES, Default: None
+  user_agent (text) - Nullable: YES, Default: None
+  is_revoked (boolean) - Nullable: YES, Default: false
+  created_at (timestamp without time zone) - Nullable: YES, Default: now()
+  expires_at (timestamp without time zone) - Nullable: NO, Default: None
+  last_used_at (timestamp without time zone) - Nullable: YES, Default: now()
+
+--- TABLE: users ---
+  id (uuid) - Nullable: NO, Default: gen_random_uuid()
+  email (character varying) - Nullable: NO, Default: None
+  password_hash (character varying) - Nullable: NO, Default: None
+  full_name (character varying) - Nullable: NO, Default: None
+  phone (character varying) - Nullable: YES, Default: None
+  is_active (boolean) - Nullable: YES, Default: true
+  created_at (timestamp with time zone) - Nullable: YES, Default: now()
+  updated_at (timestamp with time zone) - Nullable: YES, Default: now()
+  location (character varying) - Nullable: YES, Default: None
+  description (text) - Nullable: YES, Default: None
+  avatar_url (text) - Nullable: YES, Default: None
+  managed_by_id (uuid) - Nullable: YES, Default: None
+  id_card_url (text) - Nullable: YES, Default: None
+  selfie_url (text) - Nullable: YES, Default: None
+  is_verified (boolean) - Nullable: YES, Default: false
+  verification_submitted_at (timestamp without time zone) - Nullable: YES, Default: None
+  lat (double precision) - Nullable: YES, Default: None
+  lng (double precision) - Nullable: YES, Default: None
+
+--- TABLE: wallets ---
+  id (uuid) - Nullable: NO, Default: gen_random_uuid()
+  user_id (uuid) - Nullable: NO, Default: None
+  balance (numeric) - Nullable: NO, Default: 0.00
+  escrow_balance (numeric) - Nullable: NO, Default: 0.00
+  created_at (timestamp with time zone) - Nullable: YES, Default: now()
+  updated_at (timestamp with time zone) - Nullable: YES, Default: now()
+  is_active (boolean) - Nullable: YES, Default: true
+
+
+--- ENUMS ---
+
+Enum: dispute_status
+  - open
+  - resolved
+  - rejected
+
+Enum: invoice_status
+  - generated
+  - sent
+  - downloaded
+
+Enum: order_status
+  - pending
+  - accepted
+  - in_progress
+  - delivered
+  - cancelled
+  - disputed
+  - prepared
+  - completed
+  - shipped
+
+Enum: post_type
+  - permanent
+  - story
+
+Enum: product_unit
+  - kg
+  - sac
+  - piece
+  - litre
+
+Enum: transaction_status
+  - pending
+  - completed
+  - failed
+
+Enum: transaction_type
+  - deposit
+  - withdrawal
+  - escrow_lock
+  - escrow_release
+  - commission
+  - refund
+
+Enum: user_role
+  - buyer
+  - seller
+  - deliverer
+  - admin

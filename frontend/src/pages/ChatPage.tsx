@@ -25,7 +25,7 @@ import ConfirmModal from "../components/ConfirmModal";
 import UserAvatar from "../components/UserAvatar";
 import { resolveMediaUrl } from "../utils/avatar";
 import "./ChatPage.css";
-import { useSocket } from "../context/SocketContext";
+import { useSocket } from "../hooks/useSocket";
 
 import { API_URL } from "../config";
 
@@ -267,8 +267,10 @@ export default function ChatPage({
           try {
             await remoteVideoRef.current.play();
             console.log("[Call] Lecture remoteVideo reussie");
-          } catch (e) {
-            console.warn("[Call] Echec lecture auto remoteVideo:", e);
+          } catch (e: any) {
+            if (e.name !== "AbortError") {
+              console.warn("[Call] Echec lecture auto remoteVideo:", e);
+            }
           }
         }
       }
@@ -548,25 +550,16 @@ export default function ChatPage({
           });
       };
       peerConnection.current.ontrack = (event) => {
-        console.log("[Call] ontrack event received:", event.streams[0] ? "Stream present" : "No stream, using track");
+        console.log("[Call] ontrack event received:", event.track.kind);
 
-        // On récupère ou crée un flux
-        const stream = event.streams[0] || new MediaStream();
-        if (!event.streams[0] && !stream.getTracks().find(t => t.id === event.track.id)) {
-          stream.addTrack(event.track);
-        }
-
-        // On force la création d'un NOUVEAU MediaStream pour forcer React à détecter le changement
-        // et ré-attacher srcObject si nécessaire.
-        const freshStream = new MediaStream(stream.getTracks());
-        setRemoteStream(freshStream);
+        setRemoteStream((prev: any) => {
+          const stream = prev || new MediaStream();
+          if (!stream.getTracks().find((t: any) => t.id === event.track.id)) {
+            stream.addTrack(event.track);
+          }
+          return new MediaStream(stream.getTracks());
+        });
         setCallConnected(true);
-
-        // Tentative de lecture automatique forcée si possible
-        if (remoteVideoRef.current) {
-          remoteVideoRef.current.srcObject = freshStream;
-          remoteVideoRef.current.play().catch(e => console.warn("Auto-play video blocked:", e));
-        }
       };
 
       const getUserName = () => {
@@ -657,21 +650,16 @@ export default function ChatPage({
         }
       };
       peerConnection.current.ontrack = (event) => {
-        console.log("[Call] ontrack event received (answer):", event.streams[0] ? "Stream present" : "No stream, using track");
+        console.log("[Call] ontrack event received (answer):", event.track.kind);
 
-        const stream = event.streams[0] || new MediaStream();
-        if (!event.streams[0] && !stream.getTracks().find(t => t.id === event.track.id)) {
-          stream.addTrack(event.track);
-        }
-
-        const freshStream = new MediaStream(stream.getTracks());
-        setRemoteStream(freshStream);
+        setRemoteStream((prev: any) => {
+          const stream = prev || new MediaStream();
+          if (!stream.getTracks().find((t: any) => t.id === event.track.id)) {
+            stream.addTrack(event.track);
+          }
+          return new MediaStream(stream.getTracks());
+        });
         setCallConnected(true);
-
-        if (remoteVideoRef.current) {
-          remoteVideoRef.current.srcObject = freshStream;
-          remoteVideoRef.current.play().catch(e => console.warn("Auto-play video blocked (answer):", e));
-        }
       };
 
       await peerConnection.current.setRemoteDescription(

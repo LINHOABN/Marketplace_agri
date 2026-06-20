@@ -16,8 +16,8 @@ import {
     MoreHorizontal,
     PlusCircle
 } from "lucide-react";
-import { useUser } from "../context/UserContext";
-import { useSocket } from "../context/SocketContext";
+import { useUser } from "../hooks/useUser";
+import { useSocket } from "../hooks/useSocket";
 import api from "../api";
 import "./MainLayout.css";
 

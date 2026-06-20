@@ -17,6 +17,7 @@ class OrderCreate(BaseModel):
     payment_method: str
     delivery_lat: Optional[float] = None
     delivery_lng: Optional[float] = None
+    negotiation_id: Optional[str] = None
 
 @router.post("/create", status_code=201)
 async def create_order(req: OrderCreate, current_user: dict = Depends(get_current_user), db: Session = Depends(get_db)):
@@ -75,9 +76,9 @@ async def create_order(req: OrderCreate, current_user: dict = Depends(get_curren
         query = text("""
             INSERT INTO orders (buyer_id, shop_id, product_id, quantity, total_amount, 
                                status, delivery_address, payment_method, delivery_lat, delivery_lng, 
-                               delivery_fee, commission_amount, seller_amount, created_at)
+                               delivery_fee, commission_amount, seller_amount, negotiation_id, created_at)
             VALUES (:b_id, :s_id, :p_id, :q, :total, 'pending', :addr, :pay_m, :lat, :lng, 
-                    :d_fee, :comm, :s_amt, NOW())
+                    :d_fee, :comm, :s_amt, :n_id, NOW())
             RETURNING *
         """)
         result = db.execute(query, {
@@ -92,7 +93,8 @@ async def create_order(req: OrderCreate, current_user: dict = Depends(get_curren
             "lng": d_lng,
             "d_fee": delivery_fee,
             "comm": commission_amount,
-            "s_amt": seller_amount
+            "s_amt": seller_amount,
+            "n_id": req.negotiation_id if req.negotiation_id else None
         }).mappings().first()
         
         db.commit()

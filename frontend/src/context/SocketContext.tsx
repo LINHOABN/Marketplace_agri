@@ -1,25 +1,9 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import { toast } from "react-hot-toast";
-import { useUser } from "./UserContext";
-
-interface SocketContextType {
-    socket: Socket | null;
-    onlineUsers: string[];
-    incomingCall: any | null;
-    setIncomingCall: (call: any | null) => void;
-    isConnected: boolean;
-}
-
-const SocketContext = createContext<SocketContextType>({
-    socket: null,
-    onlineUsers: [],
-    incomingCall: null,
-    setIncomingCall: () => { },
-    isConnected: false,
-});
-
-export const useSocket = () => useContext(SocketContext);
+import { useUser } from "../hooks/useUser";
+import { SocketContext } from "./useSocket";
+import { SOCKET_URL } from "../config";
 
 export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const { currentUser } = useUser();
@@ -46,7 +30,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         if (!token) return;
 
         // Connexion stable (Websocket privilégié pour le temps réel des appels)
-        const newSocket = io({
+        const newSocket = io(SOCKET_URL, {
             auth: { token },
             transports: ["websocket"],
             reconnection: true,
@@ -119,8 +103,12 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
                 icon: '📞'
             });
 
-            if (navigator.vibrate) {
-                navigator.vibrate([500, 200, 500, 200, 500]);
+            try {
+                if (navigator.vibrate) {
+                    navigator.vibrate([500, 200, 500, 200, 500]);
+                }
+            } catch (vibrateErr) {
+                console.warn("Vibration blocked by browser policy:", vibrateErr);
             }
         });
 
