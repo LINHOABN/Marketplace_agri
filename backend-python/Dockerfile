@@ -1,5 +1,5 @@
-# Image de base légère (Python 3.11 pour compatibilité passlib/bcrypt)
-FROM python:3.11-slim
+# Image de base légère (Python 3.13)
+FROM python:3.13-slim
 
 # Empêche la création de fichiers .pyc et active le logging immédiat
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -7,7 +7,7 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-# Installation des dépendances système nécessaires (pour psycopg2)
+# Installation des dépendances système nécessaires
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     libpq-dev \
@@ -25,9 +25,5 @@ COPY . .
 # Création du dossier uploads
 RUN mkdir -p uploads
 
-# Exposition du port
-EXPOSE 8000
-
-# Commande de lancement (Uvicorn avec Socket.IO)
-# On utilise le port dynamique $PORT (par défaut 8000 si non défini)
-CMD uvicorn main:socket_app --host 0.0.0.0 --port ${PORT:-8000}
+# Lancement avec uvicorn (le port est géré dynamiquement par l'environnement)
+CMD ["sh", "-c", "uvicorn main:socket_app --host 0.0.0.0 --port ${PORT:-8000}"]
