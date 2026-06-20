@@ -3,7 +3,7 @@ services:
     name: agrimarche-api
     env: docker
     dockerContext: ./backend-python
-    dockerfilePath: Dockerfile
+    dockerfilePath: backend-python/Dockerfile
     plan: free
     envVars:
       - key: DATABASE_URL
