@@ -179,13 +179,21 @@ async def ping_alive(sid):
 
 # CORS Configuration
 allowed_origins = os.getenv("ALLOWED_ORIGINS", "*").split(",")
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=allowed_origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+
+# Correction pour FastAPI : allow_origins=["*"] est interdit quand allow_credentials=True.
+# On utilise allow_origin_regex pour permettre tout ou les domaines Vercel.
+cors_params = {
+    "allow_credentials": True,
+    "allow_methods": ["*"],
+    "allow_headers": ["*"],
+}
+
+if "*" in allowed_origins:
+    cors_params["allow_origin_regex"] = ".*"  # Autorise tout proprement
+else:
+    cors_params["allow_origins"] = allowed_origins
+
+app.add_middleware(CORSMiddleware, **cors_params)
 
 @app.get("/")
 async def root():
