@@ -16,7 +16,7 @@ load_dotenv(BASE_DIR / ".env")
 UPLOADS_DIR = BASE_DIR / "uploads"
 UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
 
-# Create Socket.io server
+# Create Socket.io server - On autorise tout ici pour éviter les erreurs 400 sur OPTIONS
 sio = socketio.AsyncServer(async_mode='asgi', cors_allowed_origins='*')
 
 from fastapi.responses import JSONResponse
@@ -211,13 +211,11 @@ async def root():
         "version": "2.0.0"
     }
 
-# ⚠️ CRITIQUE : L'app combinée DOIT être exposée au niveau du module.
+# Fusionner Socket.io avec l'app FastAPI
 socket_app = socketio.ASGIApp(sio, other_asgi_app=app)
 
 if __name__ == "__main__":
-    port = int(os.getenv("PORT", 8000))
-    print(f"--- DIAGNOSTIC SYSTEME ---")
-    print(f"Routes Auth chargees: /auth/login, /auth/me, /auth/verify-profile...")
-    print(f"Routes Media chargees: /media/upload...")
-    print(f"Démarrage sur http://localhost:{port}")
+    # Render utilise souvent le port 10000 par défaut si non spécifié
+    port = int(os.getenv("PORT", 10000))
+    print(f">>> [READY] Starting on port {port}")
     uvicorn.run(socket_app, host="0.0.0.0", port=port)
