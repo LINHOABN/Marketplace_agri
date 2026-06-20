@@ -5,13 +5,12 @@
 import axios, { type InternalAxiosRequestConfig } from "axios";
 import { API_URL } from "./config";
 
-// On définit la baseURL sans le suffixe /api pour éviter les conflits de merging
-// avec les chemins commençant par un slash (Axios remplace le chemin de la baseURL sinon).
-const baseRoot = API_URL.replace(/\/api\/?$/, "");
-
-const api = axios.create({
-  baseURL: baseRoot,
-});
+/**
+ * FIX ULTIME : On n'utilise PLUS le baseURL automatique d'Axios car il se comporte
+ * de manière imprévisible avec les chemins commençant par un slash en production.
+ * On gère tout manuellement dans l'intercepteur pour une fiabilité de 100%.
+ */
+const api = axios.create();
 
 let isRefreshing = false;
 let refreshQueue: Array<(token: string | null) => void> = [];
@@ -34,7 +33,6 @@ async function tryRefreshToken(): Promise<string | null> {
   const refresh = getAuthItem("refresh_token");
   if (!refresh) return null;
   try {
-    // On utilise axios direct pour éviter l'intercepteur de boucle
     const res = await axios.post(`${API_URL}/auth/refresh`, {
       refresh_token: refresh,
     });
@@ -54,14 +52,21 @@ async function tryRefreshToken(): Promise<string | null> {
 
 api.interceptors.request.use(
   (config) => {
-    // NORMALISATION : Si l'URL n'est pas absolue et ne commence pas par /api, on l'ajoute.
-    // Cela permet aux appels comme api.get("/auth/me") de devenir /api/auth/me
-    // et d'être correctement joints à la baseURL (le domaine racine).
-    if (config.url && !config.url.startsWith("http") && !config.url.startsWith("/api")) {
-      const separator = config.url.startsWith("/") ? "" : "/";
-      config.url = `/api${separator}${config.url}`;
+    // 1. MANIFESTATION DE L'URL
+    if (config.url && !config.url.startsWith("http")) {
+      // On s'assure que API_URL ne finit pas par un slash pour la jointure
+      const cleanBase = API_URL.endsWith("/") ? API_URL.slice(0, -1) : API_URL;
+
+      // On retire le leading slash du chemin pour éviter de casser la jointure
+      const cleanPath = config.url.startsWith("/") ? config.url.slice(1) : config.url;
+
+      // Si le chemin contient déjà "api/", on l'enlève car cleanBase l'a déjà
+      const finalPath = cleanPath.startsWith("api/") ? cleanPath.slice(4) : cleanPath;
+
+      config.url = `${cleanBase}/${finalPath}`;
     }
 
+    // 2. AUTHENTICATION
     const token = getAuthItem("access_token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -111,10 +116,10 @@ api.interceptors.response.use(
 
       if (newToken) {
         originalRequest.headers.Authorization = `Bearer ${newToken}`;
+        // Important: on relance avec l'instance 'api'
         return api(originalRequest);
       }
 
-      // Logout on refresh failure
       sessionStorage.removeItem("access_token");
       sessionStorage.removeItem("refresh_token");
       sessionStorage.removeItem("session_id");
