@@ -151,8 +151,6 @@ async def register(req: RegisterRequest, request: Request, db: Session = Depends
             """)
         user_res = db.execute(user_query, user_params).mappings().first()
 
-        # Sécurité : Forcer le rôle "buyer" (acheteur) à l'inscription
-        # Nul ne peut devenir vendeur ou livreur sans validation admin.
         role = "buyer"
 
         role_query = text("""
@@ -160,34 +158,18 @@ async def register(req: RegisterRequest, request: Request, db: Session = Depends
             VALUES (:user_id, CAST(:role AS user_role))
         """)
         db.execute(role_query, {"user_id": user_res["id"], "role": role})
-        db.flush()
+        db.commit()
 
         payload = _token_response(
             db,
             {
-                "id": user_res["id"],
+                "id": str(user_res["id"]),
                 "email": user_res["email"],
                 "full_name": user_res["full_name"],
                 "role": role,
             },
             request,
         )
-        db.flush()
-
-        payload = _token_response(
-            db,
-            {
-                "id": user_res["id"],
-                "email": user_res["email"],
-                "full_name": user_res["full_name"],
-                "role": role,
-            },
-            request,
-        )
-        payload["id"] = str(user_res["id"])
-        payload["full_name"] = user_res["full_name"]
-        payload["email"] = user_res["email"]
-        payload["role"] = role
         return payload
     except IntegrityError as e:
         db.rollback()
