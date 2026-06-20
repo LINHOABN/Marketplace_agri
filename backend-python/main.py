@@ -179,16 +179,14 @@ async def ping_alive(sid):
     # Just an acknowledgment to keep the connection active
     pass
 
-# CORS Configuration - Mode ultra-souple pour débloquer la production
+# CORS Configuration - Autorise tous les domaines d'origine HTTPS (nécessaire pour Vercel + Credentials)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origin_regex=r"https://.*",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-# Note: FastAPI peut rouspéter sur [*"*] + allow_credentials=True, 
-# mais avec uvicorn en amont et Socket.IO, c'est la configuration la plus stable.
 
 @app.get("/")
 async def root():

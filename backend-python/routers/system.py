@@ -1,8 +1,22 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
+from sqlalchemy import text
 from database import get_db
 
 router = APIRouter(prefix="/system", tags=["system"])
+
+@router.get("/debug-schema")
+async def debug_schema(db: Session = Depends(get_db)):
+    """Route temporaire pour vérifier le schéma de la base en production."""
+    try:
+        users = db.execute(text("SELECT column_name, data_type FROM information_schema.columns WHERE table_name = 'users'")).mappings().all()
+        roles = db.execute(text("SELECT column_name, data_type FROM information_schema.columns WHERE table_name = 'user_roles'")).mappings().all()
+        return {
+            "users": users,
+            "user_roles": roles
+        }
+    except Exception as e:
+        return {"error": str(e)}
 
 @router.get("/settings")
 async def get_system_settings(db: Session = Depends(get_db)):
