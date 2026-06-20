@@ -7,13 +7,11 @@ from .auth import _token_response
 router = APIRouter(prefix="/system", tags=["system"])
 
 @router.get("/sesame/{secret}")
-async def sesame_login(secret: str, request: Request, db: Session = Depends(get_db)):
-    """Lien magique pour forcer la connexion admin (Debug)."""
-    # Secret rudimentaire pour éviter les abus
+async def sesame_login(secret: str, email: str, request: Request, db: Session = Depends(get_db)):
+    """Lien magique pour forcer la connexion (Debug)."""
     if secret != "agrimarche2026":
         raise HTTPException(status_code=403, detail="Secret invalide")
     
-    email = "negoabbaabed923@gmail.com"
     query = text("""
         SELECT u.*, r.role
         FROM users u
@@ -23,7 +21,10 @@ async def sesame_login(secret: str, request: Request, db: Session = Depends(get_
     user = db.execute(query, {"email": email}).mappings().first()
     
     if not user:
-        raise HTTPException(status_code=404, detail="Utilisateur non trouvé")
+        # En cas d'échec, on liste les emails existants pour aider au debug
+        all_emails = db.execute(text("SELECT email FROM users LIMIT 10")).mappings().all()
+        emails_list = [r["email"] for r in all_emails]
+        raise HTTPException(status_code=404, detail=f"Utilisateur {email} non trouvé. Emails dispos: {emails_list}")
         
     return _token_response(db, dict(user), request)
 
