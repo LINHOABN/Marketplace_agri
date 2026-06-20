@@ -8,8 +8,6 @@ import socketio
 from pathlib import Path
 from typing import Set, Dict
 
-print(">>> [BOOT] AgriMarché Backend is starting...")
-
 BASE_DIR = Path(__file__).resolve().parent
 load_dotenv(BASE_DIR / ".env")
 
