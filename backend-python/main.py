@@ -181,14 +181,18 @@ async def ping_alive(sid):
 raw_origins = os.getenv("ALLOWED_ORIGINS", "*")
 allowed_origins = [o.strip() for o in raw_origins.split(",") if o.strip()]
 
-# Correction pour FastAPI : allow_origins=["*"] est interdit quand allow_credentials=True.
+# On ajoute explicitement l'origine du screenshot pour être sûr
+vercel_preview = "https://marketplace-agri-1f87jxvep-negoabbaabed923-8552s-projects.vercel.app"
+if vercel_preview not in allowed_origins:
+    allowed_origins.append(vercel_preview)
+
 cors_params = {
     "allow_credentials": True,
     "allow_methods": ["*"],
     "allow_headers": ["*"],
 }
 
-if "*" in allowed_origins or not allowed_origins:
+if "*" in allowed_origins:
     cors_params["allow_origin_regex"] = ".*"
     print(f"[CORS] Mode Wildcard active (allow_origin_regex='.*')")
 else:
