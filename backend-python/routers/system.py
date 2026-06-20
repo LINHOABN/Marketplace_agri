@@ -11,9 +11,11 @@ async def debug_schema(db: Session = Depends(get_db)):
     try:
         users = db.execute(text("SELECT column_name, data_type FROM information_schema.columns WHERE table_name = 'users'")).mappings().all()
         roles = db.execute(text("SELECT column_name, data_type FROM information_schema.columns WHERE table_name = 'user_roles'")).mappings().all()
+        enums = db.execute(text("SELECT enumlabel FROM pg_enum JOIN pg_type ON pg_enum.enumtypid = pg_type.oid WHERE pg_type.typname = 'user_role'")).mappings().all()
         return {
             "users": users,
-            "user_roles": roles
+            "user_roles": roles,
+            "user_role_enum": [e["enumlabel"] for e in enums]
         }
     except Exception as e:
         return {"error": str(e)}
