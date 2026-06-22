@@ -27,13 +27,17 @@ def upload_bytes_to_blob(
         raise RuntimeError("BLOB_READ_WRITE_TOKEN non configuré")
 
     headers = {
-        "authorization": f"Bearer {BLOB_READ_WRITE_TOKEN}",
+        "Authorization": f"Bearer {BLOB_READ_WRITE_TOKEN}",
         "x-api-version": BLOB_API_VERSION,
         "access": "public",
         "x-add-random-suffix": "1",
     }
     if content_type:
-        headers["x-content-type"] = content_type
+        # Simplification des types pour Vercel Blob
+        if "jfif" in content_type.lower():
+            headers["x-content-type"] = "image/jpeg"
+        else:
+            headers["x-content-type"] = content_type
 
     url = f"{BLOB_API_BASE}/{pathname.lstrip('/')}"
 
