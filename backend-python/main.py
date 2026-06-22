@@ -42,7 +42,7 @@ api_router = APIRouter(prefix="/api")
 
 @api_router.get("/version")
 async def get_version():
-    return {"version": "2.0.2-kyc-debug"}
+    return {"version": "2.0.3-access-check"}
 
 api_router.include_router(feed.router)
 api_router.include_router(auth.router)

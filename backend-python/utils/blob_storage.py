@@ -39,6 +39,7 @@ def upload_bytes_to_blob(
         else:
             headers["x-content-type"] = content_type
 
+    print(f"[DEBUG] Vercel Blob Access requested: {headers.get('access')}")
     url = f"{BLOB_API_BASE}/{pathname.lstrip('/')}"
 
     with httpx.Client(timeout=DEFAULT_TIMEOUT) as client:
