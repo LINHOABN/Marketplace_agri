@@ -17,12 +17,11 @@ async def upload_file(
     except Exception as e:
         import traceback
         import httpx
+        
+        # Tentative d'extraction du corps de réponse pour tout type d'erreur HTTP
         detail = str(e)
-        if isinstance(e, httpx.HTTPStatusError):
-            try:
-                detail = f"{e.response.status_code}: {e.response.text}"
-            except:
-                pass
+        if hasattr(e, "response") and hasattr(e.response, "text"):
+            detail = f"{e.response.status_code}: {e.response.text}"
         
         print(f"!!! UPLOAD ERROR !!!")
         print(f"Detail: {detail}")
