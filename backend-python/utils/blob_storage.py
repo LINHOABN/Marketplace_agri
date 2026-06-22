@@ -29,7 +29,7 @@ def upload_bytes_to_blob(
     headers = {
         "Authorization": f"Bearer {BLOB_READ_WRITE_TOKEN}",
         "x-api-version": BLOB_API_VERSION,
-        "access": "public",
+        "access": "private",
         "x-add-random-suffix": "1",
     }
     if content_type:
