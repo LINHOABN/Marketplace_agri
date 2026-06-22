@@ -39,10 +39,14 @@ def upload_bytes_to_blob(
 
     with httpx.Client(timeout=DEFAULT_TIMEOUT) as client:
         response = client.put(url, headers=headers, content=data)
-        response.raise_for_status()
+        if response.status_code != 200:
+            print(f"!!! VERCEL BLOB ERROR {response.status_code} !!!")
+            print(f"URL: {url}")
+            print(f"Response: {response.text}")
+            response.raise_for_status()
         result = response.json()
 
     blob_url = result.get("url")
     if not blob_url:
-        raise RuntimeError("Réponse Vercel Blob invalide : URL manquante")
+        raise RuntimeError(f"Réponse Vercel Blob invalide ({response.status_code}): {response.text}")
     return blob_url
