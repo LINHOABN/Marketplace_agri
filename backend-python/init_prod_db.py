@@ -157,6 +157,12 @@ def init_db():
             cur.execute(table_sql)
 
         print("3. Ajout de CATEGORIES de base...")
+        # S'assurer que le nom est unique avant le ON CONFLICT
+        cur.execute("ALTER TABLE categories ADD CONSTRAINT categories_name_unique UNIQUE (name);")
+    except Exception as e:
+        if "already exists" not in str(e): print(f"Note constraint: {e}")
+
+    try:
         base_cats = ['Fruits & Légumes', 'Céréales', 'Élevage', 'Matériel Agricole', 'Engrais', 'Services']
         for cat in base_cats:
             cur.execute("INSERT INTO categories (name) VALUES (%s) ON CONFLICT (name) DO NOTHING;", (cat,))
