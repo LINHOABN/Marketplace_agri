@@ -15,5 +15,8 @@ async def upload_file(
         url = await save_uploaded_file(file, prefix="media")
         return {"url": url}
     except Exception as e:
-        print(f"Upload error: {e}")
-        raise HTTPException(status_code=500, detail="Erreur lors de l'upload du fichier")
+        import traceback
+        print(f"!!! UPLOAD ERROR !!!")
+        print(f"Exception: {str(e)}")
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Erreur lors de l'upload : {str(e)}")

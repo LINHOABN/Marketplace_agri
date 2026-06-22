@@ -67,7 +67,12 @@ async def save_bytes(
             content_type,
         )
 
-    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
-    filepath = UPLOAD_DIR / filename
-    filepath.write_bytes(content)
-    return f"/uploads/{filename}"
+    try:
+        UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+        filepath = UPLOAD_DIR / filename
+        filepath.write_bytes(content)
+        print(f"[Store] Fichier sauvegarde LOCALEMENT : {filepath}")
+        return f"/uploads/{filename}"
+    except Exception as e:
+        print(f"[Store] ERREUR Sauvegarde Locale : {str(e)}")
+        raise e

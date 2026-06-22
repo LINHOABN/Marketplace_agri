@@ -398,6 +398,27 @@ async def request_role(
         raise HTTPException(status_code=500, detail="Erreur lors de la demande de rôle")
 
 
+@router.get("/role-requests/me")
+async def get_my_role_requests(
+    current_user: dict = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Récupère les demandes de changement de rôle de l'utilisateur actuel."""
+    user_id = current_user["id"]
+    try:
+        query = text("""
+            SELECT id, requested_role, status, note, created_at, updated_at
+            FROM role_requests
+            WHERE user_id = CAST(:u_id AS uuid)
+            ORDER BY created_at DESC
+        """)
+        results = db.execute(query, {"u_id": str(user_id)}).mappings().all()
+        return results
+    except Exception as e:
+        print(f"Error fetching role requests: {e}")
+        raise HTTPException(status_code=500, detail="Erreur lors de la récupération des demandes.")
+
+
 @router.post("/verify-profile")
 async def verify_profile(
     req: KYCSubmission,
