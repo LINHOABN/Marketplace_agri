@@ -40,6 +40,10 @@ from fastapi import APIRouter
 
 api_router = APIRouter(prefix="/api")
 
+@api_router.get("/version")
+async def get_version():
+    return {"version": "2.0.2-kyc-debug"}
+
 api_router.include_router(feed.router)
 api_router.include_router(auth.router)
 api_router.include_router(media.router)
@@ -185,10 +189,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-@app.get("/api/version")
-async def get_version():
-    return {"version": "2.0.1-kyc-debug"}
 
 @app.get("/")
 async def root():
